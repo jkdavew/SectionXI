@@ -54,6 +54,7 @@ const parseSchedule = (schedule, setSchedule, body) => {
 const cellPrep=($, cell)=>{
     let prep=$(cell).html().replace('<br>', ' ');
     prep=prep.replace('(Junior Varsity)', '');
+    prep=prep.replace('(Varsity)', '');
     prep=prep.replace('High School', 'HS');
     
     return prep;

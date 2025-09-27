@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import moment from 'moment';
 
 function Schedule({ matches, showComplete }) {
   if (matches.length === 0) {
@@ -11,10 +12,25 @@ function Schedule({ matches, showComplete }) {
         {matches.map((match, cnt) => {
           let backgroundColor = (match.isDone) ? "#CCC" : "#FFF"
           let hideTile = showComplete || !match.isDone ? 'block' : 'none';
+
+          // set border color based on when date is.  if today, then green.  if tomorrow then yellow, else normal
+          let matchDate=moment(match.date).format('MMMM Do YYYY');
+          let nowDate=moment().format('MMMM Do YYYY');
+          let tomorrowDate=moment().add(1, 'days').format('MMMM Do YYYY');
+          let borderHighlightClass="";
+          let textHighlightClass="";
+          if (matchDate===nowDate) {
+            borderHighlightClass="border-success";
+            textHighlightClass="text-success";
+          }else if (matchDate===tomorrowDate) {
+            borderHighlightClass="border-warning";
+            textHighlightClass="text-warning";
+          }
+
           return (
-            <div style={{ display: hideTile, backgroundColor, margin: '5px' }} className="card" key={cnt}>
+            <div className={`card clearfix ${borderHighlightClass}`} style={{ display: hideTile, backgroundColor, margin: '5px' }} key={cnt}>
               <div className="card-body">
-                <div className="card-title">{match.date} {match.isDone}</div>
+                <div className={`card-sub-title ${textHighlightClass}`}>{match.date} {match.isDone}</div>
                 Venue: {match.facility}<br />
                 {match.awayTeam} @ {match.homeTeam}<br />
               </div>
