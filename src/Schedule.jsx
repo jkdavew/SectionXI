@@ -15,6 +15,7 @@ function Schedule({ matches, showComplete }) {
 
           // set border color based on when date is.  if today, then green.  if tomorrow then yellow, else normal
           let matchDate=moment(match.date).format('MMMM Do YYYY');
+          let matchDOW=moment(match.date).format('ddd');
           let nowDate=moment().format('MMMM Do YYYY');
           let tomorrowDate=moment().add(1, 'days').format('MMMM Do YYYY');
           let borderHighlightClass="";
@@ -30,7 +31,7 @@ function Schedule({ matches, showComplete }) {
           return (
             <div className={`card clearfix ${borderHighlightClass}`} style={{ display: hideTile, backgroundColor, margin: '5px' }} key={cnt}>
               <div className="card-body">
-                <div className={`card-sub-title ${textHighlightClass}`}>{match.date} {match.isDone}</div>
+                <div className={`card-sub-title ${textHighlightClass}`}>{matchDOW} {match.date} {match.isDone}</div>
                 Venue: {match.facility}<br />
                 {match.awayTeam} @ {match.homeTeam}<br />
               </div>
