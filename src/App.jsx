@@ -8,6 +8,7 @@ function App() {
   const [schedule, setSchedule] = useState([]);
   const [showComplete, setShowComplete] = useState(false);
   const [scheduleIndex, setScheduleIndex] = useState(0);
+  const [error, setError] = useState("");
 
   const URL = import.meta.env.VITE_SCHEDULE_URL_LIST;
   const TITLE = import.meta.env.VITE_TITLE_LIST;
@@ -19,7 +20,7 @@ function App() {
     if (hasRun.current) return; // prevent double run (dev strict mode only)
     hasRun.current = true;
 
-    run(urls[0], schedule, setSchedule)
+    run(setError, urls[0], setSchedule)
 
     return () => {
       // cleanup
@@ -28,11 +29,11 @@ function App() {
 
   const handleScheduleChange = (e) => {
     setScheduleIndex(e.target.selectedIndex);
-    run(e.target.value, schedule, setSchedule);
+    run(setError, e.target.value, setSchedule);
   }
 
   const handleRefresh = (e) => {
-    run(urls[scheduleIndex], schedule, setSchedule);
+    run(setError, urls[scheduleIndex], setSchedule);
   }
 
   return (
@@ -47,7 +48,7 @@ function App() {
         <i style={{paddingLeft:"10px",cursor:"pointer"}} onClick={(e)=>{handleRefresh(e)}} className="bi bi-arrow-clockwise"></i>
       </span>
       <div style={{ marginTop: '50px' }}>
-        <Schedule matches={schedule} showComplete={showComplete} />
+        <Schedule error={error} url={urls[scheduleIndex]} title={titles[scheduleIndex]} matches={schedule} showComplete={showComplete} />
       </div>
     </>
   )

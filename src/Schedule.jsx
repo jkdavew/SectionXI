@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
 
-function Schedule({ matches, showComplete }) {
+function Schedule({ error, url, title, matches, showComplete }) {
+  if (error!="") {
+    return (
+      <div className="container-fluid">
+        <h2 style={{ textAlign: 'center' }}>Unable to load the schedule</h2>
+        <p style={{ textAlign: 'center', color: 'red' }}>{error}</p>
+        <p style={{ textAlign: 'center' }}><a target="_blank" href={url}>View Schedule Directly (new tab)</a></p>
+      </div>
+    );
+  }
+
   if (matches.length === 0) {
     return 'Loading...';
   }
 
   return (
     <div className="container-fluid">
+      <h2 style={{ textAlign: 'center' }}>{title}</h2>
       <div className="card-container">
         {matches.map((match, cnt) => {
           let backgroundColor = (match.isDone) ? "#CCC" : "#FFF"
